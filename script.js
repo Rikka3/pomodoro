@@ -1,78 +1,80 @@
-let timer;
-let isRunning = false;
-let isPaused = false;
-let timeLeft = 1500; // 25 minutes in seconds
-let sessionCount = 0;
-
-function updateTime() {
-    const minutes = Math.floor(timeLeft / 60);
-    const seconds = timeLeft % 60;
-    document.getElementById('time').textContent = `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: url('background.gif') no-repeat center center fixed;
+    background-size: cover;
+    font-family: 'Merienda', cursive;
+    margin: 0;
 }
 
-function updateStatus(status) {
-    document.getElementById('status').textContent = status;
+.container {
+    text-align: center;
 }
 
-function startTimer() {
-    timer = setInterval(() => {
-        timeLeft--;
-        updateTime();
-        if (timeLeft <= 0) {
-            clearInterval(timer);
-            sessionCount++;
-            if (sessionCount % 2 === 0) {
-                // Pomodoro session
-                timeLeft = 1500; // 25 minutes
-                updateStatus('Pomodoro');
-            } else {
-                // Break session
-                if (sessionCount % 8 === 0) {
-                    timeLeft = 900; // 15 minutes for long break
-                    updateStatus('Long Break');
-                } else {
-                    timeLeft = 300; // 5 minutes for short break
-                    updateStatus('Short Break');
-                }
-            }
-            updateTime();
-            startTimer(); // Auto-start the next session or break
-        }
-    }, 1000);
+.timer-container {
+    background: rgba(255, 255, 255, 0.2); /* Semi-transparent white */
+    padding: 20px;
+    border-radius: 50%; /* Always circular */
+    width: 300px;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px); /* Glass effect */
+    border: 8px solid rgba(255, 255, 255, 0.5); /* Fixed border width */
+    transition: box-shadow 0.5s; /* Smooth transition for the outline */
 }
 
-function startPauseTimer() {
-    if (!isRunning && !isPaused) {
-        isRunning = true;
-        document.getElementById('start-pause').textContent = 'Pause';
-        startTimer();
-    } else if (isRunning) {
-        clearInterval(timer);
-        isRunning = false;
-        isPaused = true;
-        document.getElementById('start-pause').textContent = 'Start';
-    } else if (!isRunning && isPaused) {
-        isRunning = true;
-        isPaused = false;
-        document.getElementById('start-pause').textContent = 'Pause';
-        startTimer();
-    }
+.status {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: white; /* Change text color to ensure visibility on the glass effect */
+    transition: transform 0.5s ease-in-out; /* Animation transition */
 }
 
-function resetTimer() {
-    clearInterval(timer);
-    isRunning = false;
-    isPaused = false;
-    timeLeft = 1500; // 25 minutes in seconds
-    sessionCount = 0;
-    document.getElementById('start-pause').textContent = 'Start';
-    updateStatus('Pomodoro');
-    updateTime();
+.status.animate {
+    transform: scale(1.2); /* Scale up for animation */
 }
 
-document.getElementById('start-pause').addEventListener('click', startPauseTimer);
-document.getElementById('reset').addEventListener('click', resetTimer);
+.timer {
+    font-size: 48px;
+    margin-bottom: 20px;
+    color: white; /* Change text color to ensure visibility on the glass effect */
+}
 
-// Initialize the timer display
-updateStatus('Pomodoro');
-updateTime();
+.controls {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.controls button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#start-pause {
+    background-color: #4CAF50;
+    color: white;
+}
+
+#reset {
+    background-color: #f44336;
+    color: white;
+}
+
+/* Styles for Spotify player */
+.spotify-player {
+    margin-top: 20px;
+    width: 100%; /* Adjust to fit the container */
+    max-width: 300px; /* Optional: limit the maximum width */
+    margin-left: auto;
+    margin-right: auto;
+}
