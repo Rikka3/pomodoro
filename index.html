@@ -4,45 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pomodoro Timer</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Merienda:wght@300..900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="settings-icon" id="settings-icon">⚙️</div>
-    <div class="settings-menu" id="settings-menu">
+    <div id="settings-icon">⚙️</div>
+    <div id="settings-modal" style="display: none;">
+        <!-- Settings content here -->
+        <button id="close-button">Close</button>
         <label for="pomodoro-duration">Pomodoro Duration (minutes):</label>
-        <input type="number" id="pomodoro-duration" value="25" min="1" max="60">
-        
+        <input id="pomodoro-duration" type="number" value="25">
         <label for="break-duration">Break Duration (minutes):</label>
-        <input type="number" id="break-duration" value="5" min="1" max="60">
-        
-        <label for="background-url">Background URL:</label>
-        <input type="text" id="background-url" placeholder="Enter image URL">
-        
+        <input id="break-duration" type="number" value="5">
+        <label for="background-url">Background Image URL:</label>
+        <input id="background-url" type="text">
         <label for="button-color">Button Color:</label>
-        <input type="color" id="button-color" value="#4CAF50">
-        
-        <button id="apply-settings">Apply Settings</button>
-          <button id="github-btn">My GitHub</button>
+        <input id="button-color" type="color" value="#333">
+        <button id="apply-settings">Apply</button>
     </div>
-    <div class="container">
-        <div class="timer-container">
-            <div class="status" id="status">Pomodoro</div>
-            <div class="timer">
-                <span id="time">25:00</span>
-            </div>
-            <div class="controls">
-                <button id="start-pause">Start</button>
-                <button id="reset">Reset</button>
-            </div>
-        </div>
-        <div class="spotify-player">
-            <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/37i9dQZF1DX8Uebhn9wzrS?utm_source=generator&theme=0" width="100%" height="130" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-        </div>  
+
+    <div id="timer-container">
+        <div id="time">25:00</div>
+        <div id="status">Pomodoro</div>
+        <button id="start-pause">Start</button>
+        <button id="reset">Reset</button>
+        <audio id="timer-end-sound" src="alarm.mp3"></audio>
     </div>
-    <audio id="timer-end-sound" src="notif.mp3" preload="auto"></audio>
+
+    <button id="github-btn">GitHub</button>
+
     <script src="script.js"></script>
 </body>
 </html>
