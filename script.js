@@ -1,80 +1,61 @@
-body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background: url('background.gif') no-repeat center center fixed;
-    background-size: cover;
-    font-family: 'Merienda', cursive;
-    margin: 0;
-}
+document.addEventListener('DOMContentLoaded', () => {
+    const startPauseBtn = document.getElementById('start-pause');
+    const resetBtn = document.getElementById('reset');
+    const timerDisplay = document.getElementById('time');
+    const statusDisplay = document.getElementById('status');
+    const timerEndSound = document.getElementById('timer-end-sound');
 
-.container {
-    text-align: center;
-}
+    let timer;
+    let isRunning = false;
+    let timeLeft = 25 * 60;
+    let isPomodoro = true;
 
-.timer-container {
-    background: rgba(255, 255, 255, 0.2); /* Semi-transparent white */
-    padding: 20px;
-    border-radius: 50%; /* Always circular */
-    width: 300px;
-    height: 300px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(10px); /* Glass effect */
-    border: 8px solid rgba(255, 255, 255, 0.5); /* Fixed border width */
-    transition: box-shadow 0.5s; /* Smooth transition for the outline */
-}
+    const updateDisplay = () => {
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+        timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    };
 
-.status {
-    font-size: 24px;
-    margin-bottom: 10px;
-    color: white; /* Change text color to ensure visibility on the glass effect */
-    transition: transform 0.5s ease-in-out; /* Animation transition */
-}
+    const startTimer = () => {
+        timer = setInterval(() => {
+            if (timeLeft > 0) {
+                timeLeft--;
+                updateDisplay();
+            } else {
+                clearInterval(timer);
+                timerEndSound.play();
+                isPomodoro = !isPomodoro;
+                timeLeft = isPomodoro ? 25 * 60 : 5 * 60;
+                statusDisplay.textContent = isPomodoro ? 'Pomodoro' : 'Break';
+                statusDisplay.classList.add('animate');
+                setTimeout(() => {
+                    statusDisplay.classList.remove('animate');
+                }, 500);
+                startTimer();
+            }
+        }, 1000);
+    };
 
-.status.animate {
-    transform: scale(1.2); /* Scale up for animation */
-}
+    startPauseBtn.addEventListener('click', () => {
+        if (isRunning) {
+            clearInterval(timer);
+            startPauseBtn.textContent = 'Start';
+        } else {
+            startTimer();
+            startPauseBtn.textContent = 'Pause';
+        }
+        isRunning = !isRunning;
+    });
 
-.timer {
-    font-size: 48px;
-    margin-bottom: 20px;
-    color: white; /* Change text color to ensure visibility on the glass effect */
-}
+    resetBtn.addEventListener('click', () => {
+        clearInterval(timer);
+        isRunning = false;
+        timeLeft = 25 * 60;
+        isPomodoro = true;
+        statusDisplay.textContent = 'Pomodoro';
+        updateDisplay();
+        startPauseBtn.textContent = 'Start';
+    });
 
-.controls {
-    display: flex;
-    gap: 10px;
-    margin-top: 20px;
-}
-
-.controls button {
-    padding: 10px 20px;
-    font-size: 16px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-#start-pause {
-    background-color: #4CAF50;
-    color: white;
-}
-
-#reset {
-    background-color: #f44336;
-    color: white;
-}
-
-/* Styles for Spotify player */
-.spotify-player {
-    margin-top: 20px;
-    width: 100%; /* Adjust to fit the container */
-    max-width: 300px; /* Optional: limit the maximum width */
-    margin-left: auto;
-    margin-right: auto;
-}
+    updateDisplay();
+});
