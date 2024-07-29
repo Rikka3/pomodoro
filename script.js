@@ -18,6 +18,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let timeLeft = 25 * 60;
     let isPomodoro = true;
 
+    // Set default background
+    document.body.style.backgroundImage = "url('background.gif')";
+
     const updateDisplay = () => {
         const minutes = Math.floor(timeLeft / 60);
         const seconds = timeLeft % 60;
@@ -78,6 +81,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const backgroundUrl = backgroundUrlInput.value.trim();
         if (backgroundUrl) {
             document.body.style.backgroundImage = `url('${backgroundUrl}')`;
+        } else {
+            document.body.style.backgroundImage = "url('background.gif')";
         }
         startPauseBtn.style.backgroundColor = buttonColorInput.value;
         resetBtn.style.backgroundColor = buttonColorInput.value;
