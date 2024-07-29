@@ -5,7 +5,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const statusDisplay = document.getElementById('status');
     const timerEndSound = document.getElementById('timer-end-sound');
     const settingsIcon = document.getElementById('settings-icon');
-    const settingsMenu = document.getElementById('settings-menu');
+    const settingsModal = document.getElementById('settings-modal');
+    const closeButton = document.getElementById('close-button');
     const applySettingsBtn = document.getElementById('apply-settings');
     const pomodoroDurationInput = document.getElementById('pomodoro-duration');
     const breakDurationInput = document.getElementById('break-duration');
@@ -65,16 +66,23 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     settingsIcon.addEventListener('click', () => {
-        settingsMenu.style.display = settingsMenu.style.display === 'none' ? 'flex' : 'none';
+        settingsModal.style.display = 'flex';
+    });
+
+    closeButton.addEventListener('click', () => {
+        settingsModal.style.display = 'none';
     });
 
     applySettingsBtn.addEventListener('click', () => {
         timeLeft = pomodoroDurationInput.value * 60;
-        document.body.style.backgroundImage = `url('${backgroundUrlInput.value}')`;
+        const backgroundUrl = backgroundUrlInput.value.trim();
+        if (backgroundUrl) {
+            document.body.style.backgroundImage = `url('${backgroundUrl}')`;
+        }
         startPauseBtn.style.backgroundColor = buttonColorInput.value;
         resetBtn.style.backgroundColor = buttonColorInput.value;
         updateDisplay();
-        settingsMenu.style.display = 'none';
+        settingsModal.style.display = 'none';
     });
 
     updateDisplay();
