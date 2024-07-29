@@ -46,9 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }, 1000);
     };
-    document.getElementById('github-btn').addEventListener('click', () => {
-        window.open('https://github.com/rikka3', '_blank');
-    });
+  
 
     startPauseBtn.addEventListener('click', () => {
         if (isRunning) {
