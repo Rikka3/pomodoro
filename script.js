@@ -5,52 +5,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const statusDisplay = document.getElementById('status');
     const timerEndSound = document.getElementById('timer-end-sound');
     const settingsIcon = document.getElementById('settings-icon');
-    const settingsModal = document.getElementById('settings-modal');
-    const closeButton = document.getElementById('close-button');
+    const settingsMenu = document.getElementById('settings-menu');
     const applySettingsBtn = document.getElementById('apply-settings');
     const pomodoroDurationInput = document.getElementById('pomodoro-duration');
     const breakDurationInput = document.getElementById('break-duration');
     const backgroundUrlInput = document.getElementById('background-url');
     const buttonColorInput = document.getElementById('button-color');
 
-    // Check if elements exist
-    if (!settingsIcon || !settingsModal || !closeButton || !applySettingsBtn) {
-        console.error('Required elements not found');
-        return;
-    }
-
-    settingsIcon.addEventListener('click', () => {
-        settingsModal.style.display = 'flex';
-    });
-
-    closeButton.addEventListener('click', () => {
-        settingsModal.style.display = 'none';
-    });
-
-    applySettingsBtn.addEventListener('click', () => {
-        timeLeft = pomodoroDurationInput.value * 60;
-        const backgroundUrl = backgroundUrlInput.value.trim();
-        if (backgroundUrl) {
-            document.body.style.backgroundImage = `url('${backgroundUrl}')`;
-        } else {
-            document.body.style.backgroundImage = "url('background.gif')";
-        }
-        startPauseBtn.style.backgroundColor = buttonColorInput.value;
-        resetBtn.style.backgroundColor = buttonColorInput.value;
-        updateDisplay();
-        settingsModal.style.display = 'none';
-    });
+    let timer;
+    let isRunning = false;
+    let timeLeft = 25 * 60;
+    let isPomodoro = true;
 
     const updateDisplay = () => {
         const minutes = Math.floor(timeLeft / 60);
         const seconds = timeLeft % 60;
         timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
     };
-
-    let timer;
-    let isRunning = false;
-    let timeLeft = 25 * 60;
-    let isPomodoro = true;
 
     const startTimer = () => {
         timer = setInterval(() => {
@@ -91,6 +62,19 @@ document.addEventListener('DOMContentLoaded', () => {
         statusDisplay.textContent = 'Pomodoro';
         updateDisplay();
         startPauseBtn.textContent = 'Start';
+    });
+
+    settingsIcon.addEventListener('click', () => {
+        settingsMenu.style.display = settingsMenu.style.display === 'none' ? 'flex' : 'none';
+    });
+
+    applySettingsBtn.addEventListener('click', () => {
+        timeLeft = pomodoroDurationInput.value * 60;
+        document.body.style.backgroundImage = `url('${backgroundUrlInput.value}')`;
+        startPauseBtn.style.backgroundColor = buttonColorInput.value;
+        resetBtn.style.backgroundColor = buttonColorInput.value;
+        updateDisplay();
+        settingsMenu.style.display = 'none';
     });
 
     updateDisplay();
